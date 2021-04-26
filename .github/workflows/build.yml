@@ -2,6 +2,9 @@ name: Monica's docker
 
 on: [push]
 
+env:
+  php-version: '8.0'
+
 jobs:
   build:
     runs-on: ${{ matrix.operating-system }}
@@ -27,12 +30,12 @@ jobs:
     - name: Update base image
       if: matrix.arch == 'i386'
       run: |
-        docker pull i386/php:7.4-${{ matrix.variant }}
+        docker pull i386/php:${{ env.php-version }}-${{ matrix.variant }}
 
     - name: Update base image
       if: matrix.arch != 'i386'
       run: |
-        docker pull php:7.4-${{ matrix.variant }}
+        docker pull php:${{ env.php-version }}-${{ matrix.variant }}
 
     - name: Build image ${{ matrix.variant }} ${{ matrix.arch }}
       run: |
