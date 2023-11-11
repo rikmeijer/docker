@@ -3,7 +3,7 @@ version: "3.9"
 services:
   app:
     image: monica
-    env_file: .env
+    env_file: stack.env
     depends_on:
       - db
     ports:
@@ -12,23 +12,13 @@ services:
       - data:/var/www/html/storage
     restart: always
 
-  cron:
-    image: monica
-    env_file: .env
-    restart: always
-    volumes:
-      - data:/var/www/html/storage
-    command: cron.sh
-    depends_on:
-      - db
-
   db:
-    image: jsurf/rpi-mariadb:latest
+    image: mariadb:11
     environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: monica
-      MYSQL_USER: homestead
-      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - mysql:/var/lib/mysql
     restart: always
